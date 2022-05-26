@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">SMC_orgonaizer_app</string>
+    <string name="bar_item_map">Карта</string>
+    <string name="bar_item_newprojects">Записаться</string>
+    <string name="bar_item_schedule">Расписание</string>
+    <string name="bar_item_info">Справка</string>
+    <string name="bar_item_profile">Профиль</string>
+    <string name="schedule_btn_personal">Личное</string>
+    <string name="schedule_btn_video">Видео</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="schedule_name">Расписание</string>
 </resources>
