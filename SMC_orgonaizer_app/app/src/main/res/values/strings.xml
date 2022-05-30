@@ -7,6 +7,8 @@
     <string name="bar_item_profile">Профиль</string>
     <string name="schedule_btn_personal">Личное</string>
     <string name="schedule_btn_video">Видео</string>
+    <string name="invalid_username">Не существует такого логина</string>
+    <string name="invalid_password">Не существует такого пароля</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="schedule_name">Расписание</string>
 </resources>
