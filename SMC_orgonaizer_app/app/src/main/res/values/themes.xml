@@ -18,4 +18,12 @@
         <item name="colorOnPrimary">@color/white</item>
         <item name="android:textColorPrimary">@color/white</item>
     </style>
+
+    <style name="GrayButtons" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorPrimary">#5C5C60</item>
+        <item name="colorPrimaryVariant">#5C5C60</item>
+        <item name="colorAccent">#5C5C60</item>
+        <item name="colorOnPrimary">#5C5C60</item>
+        <item name="android:textColorPrimary">@color/white</item>
+    </style>
 </resources>

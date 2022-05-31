@@ -5,7 +5,7 @@
     android:id="@+id/sign_in_page"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#333666">
+    android:background="#292B37">
 
     <ImageView
         android:id="@+id/imageView"
@@ -15,12 +15,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.19"
+        app:layout_constraintVertical_bias="0.31"
         app:srcCompat="@mipmap/ic_smc_launcher_foreground" />
 
     <EditText
         android:id="@+id/sign_in_page_password"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:background="@drawable/text_background"
         android:ems="10"
@@ -34,11 +34,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sign_in_page_username"
-        app:layout_constraintVertical_bias="0.110000014" />
+        app:layout_constraintVertical_bias="0.100000024" />
 
     <EditText
         android:id="@+id/sign_in_page_username"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:background="@drawable/text_background"
         android:ems="10"
@@ -52,20 +52,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.16000003" />
-
-    <Button
-        android:id="@+id/sign_in_page_sign_in_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:onClick="enterAccount"
-        android:text="Войти"
-        android:textAllCaps="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_in_page_password"
-        app:layout_constraintVertical_bias="0.15" />
+        app:layout_constraintVertical_bias="0.01999998" />
 
     <TextView
         android:id="@+id/sign_in_invalid_username"
@@ -92,5 +79,27 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/sign_in_page_password"
         app:layout_constraintStart_toStartOf="@+id/sign_in_page_password" />
+
+    <Button
+        android:id="@+id/sign_in_page_sign_in_btn"
+        android:layout_width="175dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="20dp"
+        android:autoText="true"
+        android:background="@drawable/gray_buttons_background"
+        android:elegantTextHeight="true"
+        android:onClick="enterAccount"
+        android:paddingTop="1dp"
+        android:paddingBottom="1dp"
+        android:password="false"
+        android:text="Войти"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="10sp"
+        android:theme="@style/GrayButtons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_page_password" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
