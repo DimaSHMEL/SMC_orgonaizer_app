@@ -8,8 +8,13 @@
         <entry key="..\:/Projects/AndroidApps/SMC_orgonaizer_app/SMC_orgonaizer_app/app/src/main/res/drawable/ic_map.xml" value="0.2885" />
         <entry key="..\:/Projects/AndroidApps/SMC_orgonaizer_app/SMC_orgonaizer_app/app/src/main/res/drawable/ic_newjobs.xml" value="0.2885" />
         <entry key="..\:/Projects/AndroidApps/SMC_orgonaizer_app/SMC_orgonaizer_app/app/src/main/res/drawable/ic_schedule.xml" value="0.2885" />
+        <entry key="..\:/Projects/AndroidApps/SMC_orgonaizer_app/SMC_orgonaizer_app/app/src/main/res/drawable/items_background.xml" value="0.386" />
+        <entry key="..\:/Projects/AndroidApps/SMC_orgonaizer_app/SMC_orgonaizer_app/app/src/main/res/drawable/orange_button_selector.xml" value="0.386" />
+        <entry key="..\:/Projects/AndroidApps/SMC_orgonaizer_app/SMC_orgonaizer_app/app/src/main/res/drawable/orange_buttons_background.xml" value="0.386" />
+        <entry key="..\:/Projects/AndroidApps/SMC_orgonaizer_app/SMC_orgonaizer_app/app/src/main/res/drawable/text_background.xml" value="0.386" />
         <entry key="..\:/Projects/AndroidApps/SMC_orgonaizer_app/SMC_orgonaizer_app/app/src/main/res/layout/activity_main.xml" value="0.33" />
-        <entry key="..\:/Projects/AndroidApps/SMC_orgonaizer_app/SMC_orgonaizer_app/app/src/main/res/layout/fragment_schedule.xml" value="0.3880208333333333" />
+        <entry key="..\:/Projects/AndroidApps/SMC_orgonaizer_app/SMC_orgonaizer_app/app/src/main/res/layout/fragment_profile.xml" value="0.4275331338178709" />
+        <entry key="..\:/Projects/AndroidApps/SMC_orgonaizer_app/SMC_orgonaizer_app/app/src/main/res/layout/fragment_schedule.xml" value="0.5" />
         <entry key="..\:/Projects/AndroidApps/SMC_orgonaizer_app/SMC_orgonaizer_app/app/src/main/res/layout/sing_in_page.xml" value="0.33" />
         <entry key="..\:/Projects/SMC_orgonaizer_app/SMC_orgonaizer_app/app/src/main/res/drawable/text_background.xml" value="0.1" />
         <entry key="..\:/Projects/SMC_orgonaizer_app/SMC_orgonaizer_app/app/src/main/res/layout/sing_in_page.xml" value="0.33" />

@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:background="#333336"
         android:orientation="horizontal"
+        android:paddingTop="10dp"
         android:paddingBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,6 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
+            android:checked="true"
             android:drawableTop="@drawable/ic_schedule"
             android:drawableTint="@drawable/bar_buttons_selector"
             android:text="@string/bar_item_schedule"
@@ -92,7 +94,6 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"
-        android:name="com.example.smc_orgonaizer_app.Schedule"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/radioGroup"

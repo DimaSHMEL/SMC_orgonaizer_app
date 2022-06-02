@@ -16,18 +16,27 @@ public class SignInActivity extends AppCompatActivity {
     private EditText UsernameView;
     private TextView invalidUsernameView;
     private TextView invalidPasswordView;
+    private boolean LOGGED = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Отлючение имени приложения
-        getSupportActionBar().hide();
-        setContentView(R.layout.sing_in_page);
-        //Получение view полльзователя и пароля
-        UsernameView = findViewById(R.id.sign_in_page_username);
-        PasswordView = findViewById(R.id.sign_in_page_password);
-        enterBtn = findViewById(R.id.sign_in_page_sign_in_btn);
-        invalidUsernameView = findViewById(R.id.sign_in_invalid_username);
-        invalidPasswordView = findViewById(R.id.sign_in_invalid_password);
+        if(LOGGED)
+        {
+            changeActivity();
+        }
+        else {
+
+            //Отлючение имени приложения
+            getSupportActionBar().hide();
+            setContentView(R.layout.sing_in_page);
+            //Получение view полльзователя и пароля
+            UsernameView = findViewById(R.id.sign_in_page_username);
+            PasswordView = findViewById(R.id.sign_in_page_password);
+            enterBtn = findViewById(R.id.sign_in_page_sign_in_btn);
+            invalidUsernameView = findViewById(R.id.sign_in_invalid_username);
+            invalidPasswordView = findViewById(R.id.sign_in_invalid_password);
+        }
+
     }
     String username = "1";
     String password = "1";
@@ -48,10 +57,7 @@ public class SignInActivity extends AppCompatActivity {
         String passwordIn = PasswordView.getText().toString();
         if(CheckPassword(passwordIn) && CheckUser(usernameIn))
         {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-
+            changeActivity();
         }
         else if(!CheckPassword(usernameIn))
         {
@@ -62,5 +68,11 @@ public class SignInActivity extends AppCompatActivity {
         {
             invalidPasswordView.setVisibility(View.VISIBLE);
         }
+    }
+    public void changeActivity()
+    {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
