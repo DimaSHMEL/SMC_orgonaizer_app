@@ -69,19 +69,49 @@ public class Schedule extends Fragment {
     private LinearLayout scheduleScroll;
     private TextView mouthn;
     private Button typeSelectorBtn;
+    //Переменные для селектора
+    private List<String> selectors = new ArrayList<String>(Arrays.asList(new String[]{"видео", "фото", "дизайн", "текст"}));
+    private int selectorState = 0;
     public void onStart() {
         // TODO Auto-generated method stub
         super.onStart();
+        //Заполнение предметами
         List<LinearLayout> filling = createDatesList();
         scheduleScroll = getActivity().findViewById(R.id.schedule_scroll_linear_list);
         for(int i = 0; i < filling.size(); i++)
         {
             scheduleScroll.addView(filling.get(i));
         }
+        //Добавление обработчика на кнопку селектора
         typeSelectorBtn = getActivity().findViewById(R.id.schedule_typeSelectorChanger);
         typeSelectorBtn.setOnClickListener(new View.OnClickListener() {
+            //Обработчик селектора
             @Override
             public void onClick(View v) {
+                selectorState += 1;
+                selectorState %= selectors.size();
+                switch (selectorState)
+                {
+                    case 0:
+                        typeSelectorBtn.setText(selectors.get(selectorState));
+                        typeSelectorBtn.setBackgroundColor(getResources().getColor(R.color.video_selector_color));
+                        break;
+                    case 1:
+                        typeSelectorBtn.setText(selectors.get(selectorState));
+                        typeSelectorBtn.setBackgroundColor(getResources().getColor(R.color.photo_selector_color));
+                        break;
+                    case 2:
+                        typeSelectorBtn.setText(selectors.get(selectorState));
+                        typeSelectorBtn.setBackgroundColor(getResources().getColor(R.color.text_selector_color));
+                        break;
+                    case 3:
+                        typeSelectorBtn.setText(selectors.get(selectorState));
+                        typeSelectorBtn.setBackgroundColor(getResources().getColor(R.color.design_selector_color));
+                        break;
+                    default:
+                        break;
+                }
+
             }
         });
 
@@ -140,13 +170,8 @@ public class Schedule extends Fragment {
         return list;
     }
 
-    private String selector = "видео";
-    private List<String> selectors = new ArrayList<String>(Arrays.asList(new String[]{"видео", "фото", "дизайн", "текст"}));
-    public void changeSelectorButtonFunc(View view)
-    {
 
 
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
