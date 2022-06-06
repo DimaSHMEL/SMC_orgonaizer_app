@@ -59,7 +59,7 @@
                     android:textSize="26sp" />
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/schedule_people_selector_button"
                     android:layout_width="90dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center_horizontal|center_vertical|end"

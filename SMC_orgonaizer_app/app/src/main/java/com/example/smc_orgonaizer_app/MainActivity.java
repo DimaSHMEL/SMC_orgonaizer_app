@@ -24,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
         //Создаём интенты страниц
         Fragment schedulePage = Schedule.newInstance("none", "none");
         Fragment profilePage = Profile.newInstance("none", "none");
+        Fragment mapPage = MapPage.newInstance("none", "none");
+        Fragment newJobsPage = NewJobPage.newInstance("none", "none");
+        Fragment infoPage = InfoPage.newInstance("none", "none");
         //Получем управление фрагментами
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         //Задаём первой страницей расписание
@@ -44,6 +47,24 @@ public class MainActivity extends AppCompatActivity {
                         //Смена на  расписание заменой
                         supportFragmentManager.beginTransaction()
                                 .replace(R.id.fragmentContainerView, schedulePage)
+                                .commit();
+                        break;
+                    case R.id.bar_btn_new_jobs:
+                        //Смена на  расписание заменой
+                        supportFragmentManager.beginTransaction()
+                                .replace(R.id.fragmentContainerView, newJobsPage)
+                                .commit();
+                        break;
+                    case R.id.bar_btn_map:
+                        //Смена на  расписание заменой
+                        supportFragmentManager.beginTransaction()
+                                .replace(R.id.fragmentContainerView, mapPage)
+                                .commit();
+                        break;
+                    case R.id.bar_btn_info:
+                        //Смена на  расписание заменой
+                        supportFragmentManager.beginTransaction()
+                                .replace(R.id.fragmentContainerView, infoPage)
                                 .commit();
                         break;
                     default:
