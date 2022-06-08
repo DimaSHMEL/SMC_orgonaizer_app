@@ -1,9 +1,15 @@
 package com.example.smc_orgonaizer_app;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -11,7 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TableRow;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -68,16 +74,20 @@ public class Schedule extends Fragment {
         }
 
     }
+
     private LinearLayout scheduleScroll;
     private TextView mouth;
     private  Button peopleSelectorBtn;
     private Button typeSelectorBtn;
-    private TableRow weeksRow;
+    private LinearLayout weeksRow;
     //Переменные для селектора
     private List<String> typeSelectors = new ArrayList<String>(Arrays.asList(new String[]{"видео", "фото", "дизайн", "текст", "все"}));
     private int typeSelectorState = 0;
     private String peopleSelector = "Шмелев";
     private boolean peopleSelectorState = false;
+    //Переменные с базой данных
+    private DatabaseHelper databaseHelper;
+    private SQLiteDatabase takenDb;
     private void changeDate(Calendar calendar)
     {
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
@@ -85,9 +95,14 @@ public class Schedule extends Fragment {
         mouth.setText(date);
     }
     public void onStart() {
-        // TODO Auto-generated method stub
         super.onStart();
+        //Работа с базой данных
+        databaseHelper = new DatabaseHelper(getContext());
+        // создаем базу данных
+        databaseHelper.create_db();
+        //Заполнение страницы
         fillScroll(typeSelectors.get(0));
+
         //Добавление обработчика на кнопку селектора по типу
         typeSelectorBtn = getActivity().findViewById(R.id.schedule_typeSelectorChanger);
         typeSelectorBtn.setOnClickListener(new View.OnClickListener() {
@@ -144,43 +159,65 @@ public class Schedule extends Fragment {
         mouth = getActivity().findViewById(R.id.Schedule_Text_Month);
         changeDate(new GregorianCalendar());
         //Создание недели
-        weeksRow = getActivity().findViewById(R.id.Schedule_view_weeks);
-        List<Button> week = createWeek(new GregorianCalendar());
-        for(int i = 0; i < week.size(); i++)
-        {
-            weeksRow.addView(week.get(i));
-        }
+        //fillWeeks(new GregorianCalendar());
+
+
 
     }
-    private List<Button> createWeek(Calendar currentDate)
+    private ArrayList<Button> createWeek(Calendar currentDate)
     {
-        List<Button> week = new ArrayList<>();
+        ArrayList<Button> week = new ArrayList<>();
+
         for(int i = 0; i < 7; i++)
         {
             Button button = new Button(getContext());
             button.setBackgroundColor(getResources().getColor(R.color.all_selector_color));
             button.setText(String.valueOf(currentDate.getFirstDayOfWeek()));
+            button.setWidth(10);
+            button.setGravity(1);
             week.add(button);
         }
         return week;
     }
-    private ArrayList<ArrayList<String>> createBD()
+    private void fillWeeks(Calendar currentDate)
+    {
+        //Заполнение недели
+        weeksRow = getActivity().findViewById(R.id.Schedule_view_weeks);
+        ArrayList<Button> week = createWeek(new GregorianCalendar());
+        for(int i = 0; i < week.size(); i++)
+        {
+            weeksRow.addView(week.get(i));
+        }
+    }
+    private ArrayList<ArrayList<String>> takeInfoFromTakenBD(String typeSelector)
     {
         ArrayList<ArrayList<String>> dataList = new ArrayList<>();
-        dataList.add(new ArrayList<String>(Arrays.asList(new String[]{"10:40", "Подкаст ИИ", "a-135", "Шмелев", "видео"})));
-        dataList.add(new ArrayList<String>(Arrays.asList(new String[]{"10:40", "Подкаст ИИ", "a-135", "Павлов", "видео"})));
-        dataList.add(new ArrayList<String>(Arrays.asList(new String[]{"11:40", "Подкаст ИПИ", "a-135", "Шмелев", "фото"})));
-        dataList.add(new ArrayList<String>(Arrays.asList(new String[]{"11:40", "Подкаст ИПИ", "a-135", "Павлов", "фото"})));
-        dataList.add(new ArrayList<String>(Arrays.asList(new String[]{"12:40", "Подкаст ИРИ", "a-135", "Шмелев", "текст"})));
-        dataList.add(new ArrayList<String>(Arrays.asList(new String[]{"12:40", "Подкаст ИРИ", "a-135", "Павлов", "текст"})));
-        dataList.add(new ArrayList<String>(Arrays.asList(new String[]{"13:40", "Подкаст ИТ", "a-135", "Шмелев", "дизайн"})));
-        dataList.add(new ArrayList<String>(Arrays.asList(new String[]{"13:40", "Подкаст ИТ", "a-135", "Павлов", "дизайн"})));
+        takenDb = databaseHelper.open();
+        Cursor userCursor = takenDb.query(databaseHelper.TABLE_TAKEN_PROJECTS, null, null, null, null, null, null);
+        if(userCursor.moveToFirst())
+        {
+            int indexID = userCursor.getColumnIndex(databaseHelper.COLUMN_ID);
+            int indexDate = userCursor.getColumnIndex(databaseHelper.COLUMN_DATE);
+            int indexTime = userCursor.getColumnIndex(databaseHelper.COLUMN_TIME);
+            int indexName = userCursor.getColumnIndex(databaseHelper.COLUMN_NAME);
+            int indexAdress = userCursor.getColumnIndex(databaseHelper.COLUMN_ADDRESS);
+            int indexWorker = userCursor.getColumnIndex(databaseHelper.COLUMN_WORKER);
+            int indexType= userCursor.getColumnIndex(databaseHelper.COLUMN_TYPE);
+            do {
+                userCursor.getString(indexDate);
+            }
+            while(userCursor.moveToNext());
+
+        }
+
+
+        userCursor.close();
         return dataList;
 
     }
     private List<ArrayList<String>> selectItems(String typeSelector)
     {
-        ArrayList<ArrayList<String>> dataList = createBD();
+        ArrayList<ArrayList<String>> dataList = takeInfoFromTakenBD(typeSelector);
         ArrayList<ArrayList<String>> answer = new ArrayList<>();
         for(int i = 0; i < dataList.size(); i++)
         {
@@ -254,13 +291,12 @@ public class Schedule extends Fragment {
             {
                 TextView newText = createAndSetItemText(dataList.get(i).get(j));
                 newView.addView(newText);
-
-
             }
             list.add(newView);
         }
         return list;
     }
+    //Заполнить предмеами список
     private void fillScroll(String typeSelector)
     {
         //Заполнение предметами
