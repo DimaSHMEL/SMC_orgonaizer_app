@@ -1,15 +1,16 @@
 package com.example.smc_orgonaizer_app;
 
+import static java.util.Collections.swap;
+
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -88,12 +88,8 @@ public class Schedule extends Fragment {
     //Переменные с базой данных
     private DatabaseHelper databaseHelper;
     private SQLiteDatabase takenDb;
-    private void changeDate(Calendar calendar)
-    {
-        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
-        String date = df.format(calendar.getTime());
-        mouth.setText(date);
-    }
+    private Calendar currentDate = new GregorianCalendar();
+
     public void onStart() {
         super.onStart();
         //Работа с базой данных
@@ -157,38 +153,105 @@ public class Schedule extends Fragment {
         });
         //Смена числа в месяце
         mouth = getActivity().findViewById(R.id.Schedule_Text_Month);
-        changeDate(new GregorianCalendar());
+        changeDate(currentDate);
         //Создание недели
-        //fillWeeks(new GregorianCalendar());
-
+        fillWeeks();
+        changeDateColor();
 
 
     }
-    private ArrayList<Button> createWeek(Calendar currentDate)
+    // Смена поли с нынешней датой
+    private void changeDate(Calendar currentDate)
     {
-        ArrayList<Button> week = new ArrayList<>();
+        mouth.setText(getDate(currentDate));
+    }
+    private String getDate(Calendar currentDate)
+    {
+        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+        String date = df.format(currentDate.getTime());
+        return date;
+    }
+    //создание массива кнопок
+    private TextView makeDateButton(String date)
+    {
+        TextView button = new TextView(getContext());
 
-        for(int i = 0; i < 7; i++)
+        GradientDrawable gdDefault = new GradientDrawable();
+        gdDefault.setColor(getResources().getColor(R.color.all_selector_color));
+        gdDefault.setCornerRadius(100);
+        button.setBackground(gdDefault);
+
+        button.setText(date);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMargins(10, 0, 10, 0);
+        params.weight = 1;
+
+        button.setLayoutParams(params);
+        button.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+        button.setTextSize(25);
+        button.setHeight(175);
+        button.setWidth(150);
+        button.setTextColor(getResources().getColor(R.color.white));
+        return button;
+
+    }
+    private ArrayList<Integer> currentWeek;
+    private ArrayList<TextView> createWeek(Calendar DATE)
+    {
+        ArrayList<TextView> week = new ArrayList<>();
+        Calendar currentDate = new GregorianCalendar();
+        currentDate.setTime(DATE.getTime());
+        currentWeek = new ArrayList<>();
+        for(int i = Calendar.MONDAY; i <= Calendar.SATURDAY; i++)
         {
-            Button button = new Button(getContext());
-            button.setBackgroundColor(getResources().getColor(R.color.all_selector_color));
-            button.setText(String.valueOf(currentDate.getFirstDayOfWeek()));
-            button.setWidth(10);
-            button.setGravity(1);
-            week.add(button);
+            currentDate.set(Calendar.DAY_OF_WEEK, i);
+            String date = String.valueOf(Integer.parseInt(getDate(currentDate).split("\\.")[0]));
+            week.add(makeDateButton(date));
+            currentWeek.add(Integer.parseInt(getDate(currentDate).split("\\.")[0]));
         }
+        currentDate.set(Calendar.WEEK_OF_YEAR, currentDate.getWeekYear() - 1);
+        currentDate.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+        String date = String.valueOf(Integer.parseInt(getDate(currentDate).split("\\.")[0]));
+        week.add(makeDateButton(date));
+        currentWeek.add(Integer.parseInt(getDate(currentDate).split("\\.")[0]));
         return week;
     }
-    private void fillWeeks(Calendar currentDate)
+    private void changeDateColor()
+    {
+        List<TextView> week = new ArrayList<>();
+        for(int i = 0; i < weeksRow.getChildCount(); i++)
+        {
+            week.add((TextView) weeksRow.getChildAt(i));
+        }
+        for (int i = 0; i < week.size(); i++)
+        {
+            String TEMP = getDate(currentDate);
+            Integer temp = Integer.parseInt(TEMP.split("\\.")[0]);
+            if(week.get(i).getText().toString().equals(String.valueOf(temp)))
+            {
+                week.get(i).setBackgroundColor(getResources().getColor(R.color.purple_500));
+            }
+            else
+            {
+                week.get(i).setBackgroundColor(getResources().getColor(R.color.all_selector_color));
+
+            }
+        }
+    }
+    //Заполнение вида с неделями
+    private void fillWeeks()
     {
         //Заполнение недели
         weeksRow = getActivity().findViewById(R.id.Schedule_view_weeks);
-        ArrayList<Button> week = createWeek(new GregorianCalendar());
+        ArrayList<TextView> week = createWeek(currentDate);
         for(int i = 0; i < week.size(); i++)
         {
             weeksRow.addView(week.get(i));
         }
     }
+    //Функция доставания из бд данных
     private ArrayList<ArrayList<String>> takeInfoFromTakenBD(String typeSelector)
     {
         ArrayList<ArrayList<String>> dataList = new ArrayList<>();
@@ -200,52 +263,58 @@ public class Schedule extends Fragment {
             int indexDate = userCursor.getColumnIndex(databaseHelper.COLUMN_DATE);
             int indexTime = userCursor.getColumnIndex(databaseHelper.COLUMN_TIME);
             int indexName = userCursor.getColumnIndex(databaseHelper.COLUMN_NAME);
-            int indexAdress = userCursor.getColumnIndex(databaseHelper.COLUMN_ADDRESS);
+            int indexAddress = userCursor.getColumnIndex(databaseHelper.COLUMN_ADDRESS);
             int indexWorker = userCursor.getColumnIndex(databaseHelper.COLUMN_WORKER);
             int indexType= userCursor.getColumnIndex(databaseHelper.COLUMN_TYPE);
             do {
-                userCursor.getString(indexDate);
+                ArrayList<String> line = new ArrayList<>();
+                String dbDate = userCursor.getString(indexDate);
+                if(dbDate.equals(getDate(currentDate)) || true)
+                {
+                    String dbWorker = userCursor.getString(indexWorker).split(" ")[0];
+                    if(peopleSelectorState || peopleSelector.equals(dbWorker))
+                    {
+                        String dbType = userCursor.getString(indexType);
+                        if(dbType.equals(typeSelector) || typeSelector.equals("все"))
+                        {
+                            String dbTime = userCursor.getString(indexTime);
+                            String dbName = userCursor.getString(indexName);
+                            String dbAddrees = userCursor.getString(indexAddress).split(" ")[0];
+                            Integer dbID = userCursor.getInt(indexID);
+                            line.add(dbTime); line.add(dbName); line.add(dbAddrees); line.add(dbWorker); line.add(dbType); line.add(String.valueOf(dbID));
+                            dataList.add(line);
+                        }
+                    }
+                }
             }
             while(userCursor.moveToNext());
 
         }
-
-
         userCursor.close();
         return dataList;
 
     }
-    private List<ArrayList<String>> selectItems(String typeSelector)
+    private List<ArrayList<String>> sortByTime(List<ArrayList<String>> data)
     {
-        ArrayList<ArrayList<String>> dataList = takeInfoFromTakenBD(typeSelector);
-        ArrayList<ArrayList<String>> answer = new ArrayList<>();
-        for(int i = 0; i < dataList.size(); i++)
+        for(int i = 0; i < data.size() - 1; i++)
         {
-            if(peopleSelectorState)
+            for (int j = 0; j < data.size(); j++)
             {
-                if(typeSelector.equals("все"))
-                {
-                    answer.add(dataList.get(i));
+                String temp1 = data.get(i).get(0);
+                String temp2 = data.get(i + 1).get(0);
+                if(Integer.parseInt(temp1.split(":")[0]) > Integer.parseInt(temp2.split(":")[0])) {
+                    swap(data, i, i + 1);
                 }
-                else if(dataList.get(i).get(4).equals(typeSelector))
+                else if (Integer.parseInt(temp1.split(":")[0]) == Integer.parseInt(temp2.split(":")[0]))
                 {
-                    answer.add(dataList.get(i));
-                }
-            }
-            else
-            {
-                if(dataList.get(i).get(3).equals(peopleSelector)) {
-                    if (typeSelector.equals("все")) {
-                        answer.add(dataList.get(i));
-                    } else if (dataList.get(i).get(4).equals(typeSelector)) {
-                        answer.add(dataList.get(i));
+                    if(Integer.parseInt(temp1.split(":")[1]) > Integer.parseInt(temp2.split(":")[1]))
+                    {
+                        swap(data, i, i + 1);
                     }
                 }
             }
-
         }
-        return answer;
-
+        return data;
     }
     //Создать предмет
     private LinearLayout createAndSetItem()
@@ -282,16 +351,17 @@ public class Schedule extends Fragment {
     //Создать список предметов
     private List<LinearLayout> createDatesList(String typeSelector)
     {
-        List<ArrayList<String>> dataList = selectItems(typeSelector);
+        List<ArrayList<String>> dataList = sortByTime(takeInfoFromTakenBD(typeSelector));
         List<LinearLayout> list = new ArrayList<>();
         for(int i = 0; i < dataList.size(); i++)
         {
             LinearLayout newView = createAndSetItem();
-            for(int j = 0; j < dataList.get(i).size(); j++)
+            for(int j = 0; j < dataList.get(i).size() - 1; j++)
             {
                 TextView newText = createAndSetItemText(dataList.get(i).get(j));
                 newView.addView(newText);
             }
+            newView.setId(Integer.parseInt(dataList.get(i).get(dataList.get(i).size() - 1)));
             list.add(newView);
         }
         return list;
