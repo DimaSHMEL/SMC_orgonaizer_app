@@ -1,6 +1,9 @@
 package com.example.smc_orgonaizer_app;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,7 +60,7 @@ public class Profile extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
+    private TextView profileText;
     @Override
     public void onStart() {
         super.onStart();
@@ -65,16 +69,30 @@ public class Profile extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), SignInActivity.class);
+                saveAutih();
                 startActivity(intent);
                 getActivity().finish();
             }
         });
+        profileText = getActivity().findViewById(R.id.profile_name);
+        setProfile();
     }
-
+    private void setProfile()
+    {
+        SharedPreferences sPref = getActivity().getSharedPreferences("AUTH", MODE_PRIVATE);
+        profileText.setText(sPref.getString("user_FIO", null));
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
+    }
+    private void saveAutih()
+    {
+        SharedPreferences sPref = getActivity().getSharedPreferences("AUTH", MODE_PRIVATE);
+        SharedPreferences.Editor ed = sPref.edit();
+        ed.putBoolean("LOGGED", false);
+        ed.apply();
     }
 }

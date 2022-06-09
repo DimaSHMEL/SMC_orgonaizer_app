@@ -2,14 +2,14 @@ package com.example.smc_orgonaizer_app;
 
 import static java.util.Collections.swap;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import android.view.Gravity;
@@ -76,29 +76,32 @@ public class Schedule extends Fragment {
     }
 
     private LinearLayout scheduleScroll;
-    private TextView mouth;
     private  Button peopleSelectorBtn;
     private Button typeSelectorBtn;
     private LinearLayout weeksRow;
     //Переменные для селектора
     private List<String> typeSelectors = new ArrayList<String>(Arrays.asList(new String[]{"видео", "фото", "дизайн", "текст", "все"}));
     private int typeSelectorState = 0;
-    private String peopleSelector = "Шмелев";
+    private String peopleSelector;
     private boolean peopleSelectorState = false;
     //Переменные с базой данных
     private DatabaseHelper databaseHelper;
     private SQLiteDatabase takenDb;
-    private Calendar currentDate = new GregorianCalendar();
-
+    private Calendar currentDate;
+    //Работа со временем
+    private Button leftBtn, rightBtn;
+    private TextView DATE, month;
     public void onStart() {
         super.onStart();
+        currentDate = new GregorianCalendar();
         //Работа с базой данных
         databaseHelper = new DatabaseHelper(getContext());
         // создаем базу данных
         databaseHelper.create_db();
         //Заполнение страницы
         fillScroll(typeSelectors.get(0));
-
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("AUTH", Context.MODE_PRIVATE);
+        peopleSelector = sharedPreferences.getString("user_FIO", null).split(" ")[0];
         //Добавление обработчика на кнопку селектора по типу
         typeSelectorBtn = getActivity().findViewById(R.id.schedule_typeSelectorChanger);
         typeSelectorBtn.setOnClickListener(new View.OnClickListener() {
@@ -151,19 +154,41 @@ public class Schedule extends Fragment {
 
             }
         });
-        //Смена числа в месяце
-        mouth = getActivity().findViewById(R.id.Schedule_Text_Month);
+        //Смена числа в выбранной дате
+        DATE = getActivity().findViewById(R.id.MD);
+        month = getActivity().findViewById(R.id.MONTH);
         changeDate(currentDate);
-        //Создание недели
+        //Создание недели и кнопок под неё
         fillWeeks();
+        checkMonth();
         changeDateColor();
+        leftBtn = getActivity().findViewById(R.id.schedule_left_btn);
+        rightBtn = getActivity().findViewById(R.id.schedule_rigth_btn);
+        leftBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentDate.add(Calendar.DATE, -7);
+                fillWeeks();
+                checkMonth();
+            }
+        });
+        rightBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentDate.add(Calendar.DATE, 7);
+                fillWeeks();
+                checkMonth();
+            }
+        });
+
 
 
     }
+    private boolean stateCurrentWeek = true;
     // Смена поли с нынешней датой
     private void changeDate(Calendar currentDate)
     {
-        mouth.setText(getDate(currentDate));
+        DATE.setText(getDate(currentDate));
     }
     private String getDate(Calendar currentDate)
     {
@@ -171,6 +196,53 @@ public class Schedule extends Fragment {
         String date = df.format(currentDate.getTime());
         return date;
     }
+    private void checkMonth()
+    {
+        Integer monthInt = currentDate.get(Calendar.MONTH);
+        switch (monthInt)
+        {
+            case 0:
+                month.setText("Январь");
+                break;
+            case 1:
+                month.setText("Февраль");
+                break;
+            case 2:
+                month.setText("Март");
+                break;
+            case 3:
+                month.setText("Апрель");
+                break;
+            case 4:
+                month.setText("Май");
+                break;
+            case 5:
+                month.setText("Июнь");
+                break;
+            case 6:
+                month.setText("Июль");
+                break;
+            case 7:
+                month.setText("Август");
+                break;
+            case 8:
+                month.setText("Сентябрь");
+                break;
+            case 9:
+                month.setText("Октябрь");
+                break;
+            case 10:
+                month.setText("Ноябрь");
+                break;
+            case 11:
+                month.setText("Декабрь");
+                break;
+            default:
+                break;
+        }
+        month.setText(month.getText().toString() + " " + currentDate.get(Calendar.YEAR));
+    }
+
     //создание массива кнопок
     private TextView makeDateButton(String date)
     {
@@ -190,14 +262,37 @@ public class Schedule extends Fragment {
 
         button.setLayoutParams(params);
         button.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
-        button.setTextSize(25);
-        button.setHeight(175);
-        button.setWidth(150);
+        button.setTextSize(20);
+        button.setHeight(100);
+        button.setWidth(100);
         button.setTextColor(getResources().getColor(R.color.white));
+        button.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v) {
+                TextView temp = (TextView) v;
+                currentDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(temp.getText().toString()));
+                stateCurrentWeek = true;
+                for(int i = 0; i < currentWeek.size(); i++)
+                {
+                    if(Integer.parseInt(temp.getText().toString()) == Integer.parseInt(currentWeek.get(i).split("\\.")[0]))
+                    {
+                        currentDate.set(Calendar.MONTH, Integer.parseInt(currentWeek.get(i).split("\\.")[1]) - 1);
+                        currentDate.set(Calendar.YEAR, Integer.parseInt(currentWeek.get(i).split("\\.")[2]));
+
+                        break;
+                    }
+                }
+                changeDate(currentDate);
+                changeDateColor();
+                fillScroll(typeSelectors.get(typeSelectorState));
+            }
+        });
         return button;
 
     }
-    private ArrayList<Integer> currentWeek;
+    private ArrayList<String> currentWeek;
     private ArrayList<TextView> createWeek(Calendar DATE)
     {
         ArrayList<TextView> week = new ArrayList<>();
@@ -209,13 +304,13 @@ public class Schedule extends Fragment {
             currentDate.set(Calendar.DAY_OF_WEEK, i);
             String date = String.valueOf(Integer.parseInt(getDate(currentDate).split("\\.")[0]));
             week.add(makeDateButton(date));
-            currentWeek.add(Integer.parseInt(getDate(currentDate).split("\\.")[0]));
+            currentWeek.add(getDate(currentDate));
         }
-        currentDate.set(Calendar.WEEK_OF_YEAR, currentDate.getWeekYear() - 1);
+        currentDate.add(Calendar.DATE,7);
         currentDate.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
         String date = String.valueOf(Integer.parseInt(getDate(currentDate).split("\\.")[0]));
         week.add(makeDateButton(date));
-        currentWeek.add(Integer.parseInt(getDate(currentDate).split("\\.")[0]));
+        currentWeek.add(getDate(currentDate));
         return week;
     }
     private void changeDateColor()
@@ -229,15 +324,19 @@ public class Schedule extends Fragment {
         {
             String TEMP = getDate(currentDate);
             Integer temp = Integer.parseInt(TEMP.split("\\.")[0]);
-            if(week.get(i).getText().toString().equals(String.valueOf(temp)))
+            GradientDrawable gdDefault = new GradientDrawable();
+            gdDefault.setCornerRadius(100);
+            if(week.get(i).getText().toString().equals(String.valueOf(temp)) && stateCurrentWeek)
             {
-                week.get(i).setBackgroundColor(getResources().getColor(R.color.purple_500));
+                gdDefault.setColor(getResources().getColor(R.color.purple_500));
             }
             else
             {
-                week.get(i).setBackgroundColor(getResources().getColor(R.color.all_selector_color));
+                gdDefault.setColor(getResources().getColor(R.color.all_selector_color));
 
             }
+            week.get(i).setBackground(gdDefault);
+
         }
     }
     //Заполнение вида с неделями
@@ -245,6 +344,7 @@ public class Schedule extends Fragment {
     {
         //Заполнение недели
         weeksRow = getActivity().findViewById(R.id.Schedule_view_weeks);
+        weeksRow.removeAllViews();
         ArrayList<TextView> week = createWeek(currentDate);
         for(int i = 0; i < week.size(); i++)
         {
@@ -269,7 +369,7 @@ public class Schedule extends Fragment {
             do {
                 ArrayList<String> line = new ArrayList<>();
                 String dbDate = userCursor.getString(indexDate);
-                if(dbDate.equals(getDate(currentDate)) || true)
+                if(dbDate.equals(getDate(currentDate)))
                 {
                     String dbWorker = userCursor.getString(indexWorker).split(" ")[0];
                     if(peopleSelectorState || peopleSelector.equals(dbWorker))
@@ -279,9 +379,9 @@ public class Schedule extends Fragment {
                         {
                             String dbTime = userCursor.getString(indexTime);
                             String dbName = userCursor.getString(indexName);
-                            String dbAddrees = userCursor.getString(indexAddress).split(" ")[0];
+                            String dbAddress = userCursor.getString(indexAddress).split(" ")[0];
                             Integer dbID = userCursor.getInt(indexID);
-                            line.add(dbTime); line.add(dbName); line.add(dbAddrees); line.add(dbWorker); line.add(dbType); line.add(String.valueOf(dbID));
+                            line.add(dbTime); line.add(dbName); line.add(dbAddress); line.add(dbWorker); line.add(dbType); line.add(String.valueOf(dbID));
                             dataList.add(line);
                         }
                     }

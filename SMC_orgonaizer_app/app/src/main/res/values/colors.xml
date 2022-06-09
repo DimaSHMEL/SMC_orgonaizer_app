@@ -13,4 +13,7 @@
     <color name="design_selector_color">#E72481</color>
     <color name="text_selector_color">#1FB1C5</color>
     <color name="all_selector_color">#4E4E4E</color>
+
+    <color name="accept">#2BFF00</color>
+
 </resources>
