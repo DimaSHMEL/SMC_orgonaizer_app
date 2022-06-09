@@ -77,9 +77,11 @@ public class NewJobPage extends Fragment {
     private List<String> typeSelectors = new ArrayList<String>(Arrays.asList(new String[]{"видео", "фото", "дизайн", "текст", "все"}));
     private int typeSelectorState = 0;
     private Button typeSelectorBtn;
+    private float scale;
     @Override
     public void onStart() {
         super.onStart();
+        scale = getContext().getResources().getDisplayMetrics().density;
         //Добавление обработчика на кнопку селектора по типу
         typeSelectorBtn = getActivity().findViewById(R.id.new_jobs_type_selector_btn);
         databaseHelper = new DatabaseHelper(getContext());
@@ -193,8 +195,8 @@ public class NewJobPage extends Fragment {
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
         params.gravity = Gravity.FILL | Gravity.FILL_HORIZONTAL;
-        params.setMargins(60, 60, 60, 0);
-        newView.setPadding(60, 60, 60, 60);
+        params.setMargins((int) (20 * scale), (int) (20 * scale), (int) (20 * scale), 0);
+        newView.setPadding((int) (20* scale), (int) (20* scale), (int) (20* scale), (int) (20* scale));
         newView.setLayoutParams(params);
         return newView;
     }
@@ -215,14 +217,14 @@ public class NewJobPage extends Fragment {
         params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(0, 0, 150, 0);
+        params.setMargins(0, 0, (int) (40 * scale), 0);
         Title.setLayoutParams(params);
 
         TextView Type = new TextView(this.getContext());
         Type.setText(type);
         Type.setTextColor(Color.parseColor("#FFFFFF"));
         Type.setTextSize(16);
-        Type.setPadding(50, 30, 50 , 30);
+        Type.setPadding((int) (15* scale), (int) (10* scale), (int) (15* scale), (int) (10* scale));
         Type.setBackground(changeColor());
 
         newView.addView(Title);
@@ -264,7 +266,7 @@ public class NewJobPage extends Fragment {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(20, 20, 0, 0);
+        params.setMargins(0, (int) (20 * scale), 0, 0);
         params.gravity = Gravity.FILL;
         params.weight = 1;
         newText.setLayoutParams(params);
@@ -283,12 +285,12 @@ public class NewJobPage extends Fragment {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(250, 60, 250, 0);
+        params.setMargins((int) (100 * scale), (int) (20* scale), (int) (100* scale), 0);
         newText.setLayoutParams(params);
         newText.setBackground(drawable);
         newText.setGravity(Gravity.CENTER);
         newText.setTextSize(20);
-        newText.setPadding(0, 20, 0, 20);
+        newText.setPadding(0, (int) (10* scale), 0, (int) (10* scale));
         newText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

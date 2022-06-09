@@ -93,6 +93,7 @@ public class Schedule extends Fragment {
     private TextView DATE, month;
     public void onStart() {
         super.onStart();
+        scale = getContext().getResources().getDisplayMetrics().density;
         currentDate = new GregorianCalendar();
         //Работа с базой данных
         databaseHelper = new DatabaseHelper(getContext());
@@ -242,6 +243,7 @@ public class Schedule extends Fragment {
         }
         month.setText(month.getText().toString() + " " + currentDate.get(Calendar.YEAR));
     }
+    private float scale;
 
     //создание массива кнопок
     private TextView makeDateButton(String date)
@@ -250,7 +252,6 @@ public class Schedule extends Fragment {
 
         GradientDrawable gdDefault = new GradientDrawable();
         gdDefault.setColor(getResources().getColor(R.color.all_selector_color));
-        final float scale = getContext().getResources().getDisplayMetrics().density;
         gdDefault.setCornerRadius(100 * scale);
         button.setBackground(gdDefault);
 
@@ -258,14 +259,14 @@ public class Schedule extends Fragment {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins((int) (10 * scale), 0, (int) (10 * scale), 0);
+        params.setMargins((int) (5 * scale), 0, (int) (5 * scale), 0);
         params.weight = 1;
 
         button.setLayoutParams(params);
         button.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
         button.setTextSize(20);
-        button.setHeight(150);
-        button.setWidth(125);
+        button.setHeight((int) (50 * scale));
+        button.setWidth((int) (50 * scale));
         button.setTextColor(getResources().getColor(R.color.white));
         button.setOnClickListener(new View.OnClickListener()
         {
@@ -427,9 +428,9 @@ public class Schedule extends Fragment {
                 LinearLayout.LayoutParams.MATCH_PARENT
         );
         params.gravity = Gravity.FILL | Gravity.FILL_HORIZONTAL;
-        params.setMargins(20, 60, 20, 0);
+        params.setMargins((int) (20 * scale), (int) (20 * scale), (int) (20 * scale), 0);
         newView.setLayoutParams(params);
-        newView.setPadding(20, 40, 20, 40);
+        newView.setPadding((int) (20 * scale), (int) (20 * scale), (int) (20 * scale), (int) (20 * scale));
         return newView;
     }
     //Создать текст в предмете
@@ -441,11 +442,11 @@ public class Schedule extends Fragment {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(20, 0, 0, 0);
+        params.setMargins(0, 0, 0, 0);
         params.gravity = Gravity.FILL;
         params.weight = 1;
         newText.setLayoutParams(params);
-        newText.setTextSize(16);
+        newText.setTextSize(14);
         return newText;
     }
 
