@@ -19,21 +19,6 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <RadioButton
-            android:id="@+id/bar_btn_map"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:button="@null"
-            android:checked="true"
-            android:drawableTop="@drawable/ic_map"
-            android:drawableTint="@drawable/bar_buttons_selector"
-            android:text="@string/bar_item_map"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="10sp"
-            android:theme="@style/RadioGroupMenuBarStyle" />
-
-        <RadioButton
             android:id="@+id/bar_btn_new_jobs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,20 +42,6 @@
             android:drawableTop="@drawable/ic_schedule"
             android:drawableTint="@drawable/bar_buttons_selector"
             android:text="@string/bar_item_schedule"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="10sp"
-            android:theme="@style/RadioGroupMenuBarStyle" />
-
-        <RadioButton
-            android:id="@+id/bar_btn_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:button="@null"
-            android:drawableTop="@drawable/ic_info"
-            android:drawableTint="@drawable/bar_buttons_selector"
-            android:text="@string/bar_item_info"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:textSize="10sp"

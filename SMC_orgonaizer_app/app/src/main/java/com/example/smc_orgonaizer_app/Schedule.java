@@ -250,21 +250,22 @@ public class Schedule extends Fragment {
 
         GradientDrawable gdDefault = new GradientDrawable();
         gdDefault.setColor(getResources().getColor(R.color.all_selector_color));
-        gdDefault.setCornerRadius(100);
+        final float scale = getContext().getResources().getDisplayMetrics().density;
+        gdDefault.setCornerRadius(100 * scale);
         button.setBackground(gdDefault);
 
         button.setText(date);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(10, 0, 10, 0);
+        params.setMargins((int) (10 * scale), 0, (int) (10 * scale), 0);
         params.weight = 1;
 
         button.setLayoutParams(params);
         button.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
         button.setTextSize(20);
-        button.setHeight(100);
-        button.setWidth(100);
+        button.setHeight(150);
+        button.setWidth(125);
         button.setTextColor(getResources().getColor(R.color.white));
         button.setOnClickListener(new View.OnClickListener()
         {

@@ -189,12 +189,12 @@ public class NewJobPage extends Fragment {
         newView.setOrientation(LinearLayout.VERTICAL);
         newView.setBackground(getResources().getDrawable(R.drawable.items_background));
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                1000,
+                ViewGroup.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
         params.gravity = Gravity.FILL | Gravity.FILL_HORIZONTAL;
-        params.setMargins(40, 60, 40, 0);
-        newView.setPadding(40, 60, 40, 60);
+        params.setMargins(60, 60, 60, 0);
+        newView.setPadding(60, 60, 60, 60);
         newView.setLayoutParams(params);
         return newView;
     }
@@ -202,23 +202,27 @@ public class NewJobPage extends Fragment {
     {
         LinearLayout newView = new LinearLayout(this.getContext());
         newView.setOrientation(LinearLayout.HORIZONTAL);
-
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        newView.setLayoutParams(params);
 
         TextView Title = new TextView(this.getContext());
         Title.setText(name);
         Title.setTextColor(Color.parseColor("#FFFFFF"));
         Title.setTextSize(28);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+        params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(0, 0, 75, 0);
+        params.setMargins(0, 0, 150, 0);
         Title.setLayoutParams(params);
 
         TextView Type = new TextView(this.getContext());
         Type.setText(type);
         Type.setTextColor(Color.parseColor("#FFFFFF"));
         Type.setTextSize(16);
-        Type.setPadding(50, 25, 50 , 25);
+        Type.setPadding(50, 30, 50 , 30);
         Type.setBackground(changeColor());
 
         newView.addView(Title);
@@ -260,11 +264,11 @@ public class NewJobPage extends Fragment {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(20, 10, 0, 0);
+        params.setMargins(20, 20, 0, 0);
         params.gravity = Gravity.FILL;
         params.weight = 1;
         newText.setLayoutParams(params);
-        newText.setTextSize(18);
+        newText.setTextSize(19);
         return newText;
     }
     private TextView makeButton(int id)
@@ -279,7 +283,7 @@ public class NewJobPage extends Fragment {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(250, 40, 250, 0);
+        params.setMargins(250, 60, 250, 0);
         newText.setLayoutParams(params);
         newText.setBackground(drawable);
         newText.setGravity(Gravity.CENTER);

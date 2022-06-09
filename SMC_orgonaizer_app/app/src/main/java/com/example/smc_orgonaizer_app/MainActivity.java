@@ -55,18 +55,18 @@ public class MainActivity extends AppCompatActivity {
                                 .replace(R.id.fragmentContainerView, newJobsPage)
                                 .commit();
                         break;
-                    case R.id.bar_btn_map:
-                        //Смена на  расписание заменой
-                        supportFragmentManager.beginTransaction()
-                                .replace(R.id.fragmentContainerView, mapPage)
-                                .commit();
-                        break;
-                    case R.id.bar_btn_info:
-                        //Смена на  расписание заменой
-                        supportFragmentManager.beginTransaction()
-                                .replace(R.id.fragmentContainerView, infoPage)
-                                .commit();
-                        break;
+//                    case R.id.bar_btn_map:
+//                        //Смена на  расписание заменой
+//                        supportFragmentManager.beginTransaction()
+//                                .replace(R.id.fragmentContainerView, mapPage)
+//                                .commit();
+//                        break;
+//                    case R.id.bar_btn_info:
+//                        //Смена на  расписание заменой
+//                        supportFragmentManager.beginTransaction()
+//                                .replace(R.id.fragmentContainerView, infoPage)
+//                                .commit();
+//                        break;
                     default:
                         break;
                 }
