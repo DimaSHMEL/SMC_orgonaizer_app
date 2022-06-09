@@ -13,12 +13,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ScrollView
+            android:id="@+id/new_jobs_scrol_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+
+            <LinearLayout
+                android:id="@+id/new_jobs_filling"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+
         <LinearLayout
             android:id="@+id/linearLayout4"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center_horizontal|fill|center_vertical"
+            android:gravity="center_horizontal|fill|fill_horizontal|center_vertical"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -28,12 +43,14 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_gravity="fill|fill_horizontal|left"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="50dp"
-                android:gravity="center_horizontal|center_vertical"
+                android:layout_marginRight="0dp"
+                android:layout_weight="2"
+                android:gravity="center_horizontal|left|center_vertical"
                 android:text="Доска доступных работ"
                 android:textColor="#FFFFFF"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <Button
                 android:id="@+id/new_jobs_type_selector_btn"
@@ -52,22 +69,6 @@
                 app:cornerRadius="20dp"
                 app:iconPadding="0dp" />
         </LinearLayout>
-
-        <ScrollView
-            android:id="@+id/new_jobs_scrol_view"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
-
-            <LinearLayout
-                android:id="@+id/new_jobs_filling"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
-        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.icu.text.CaseMap;
 import android.os.Bundle;
 
 import androidx.core.view.GravityCompat;
@@ -209,23 +210,25 @@ public class NewJobPage extends Fragment {
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
         newView.setLayoutParams(params);
-
         TextView Title = new TextView(this.getContext());
         Title.setText(name);
         Title.setTextColor(Color.parseColor("#FFFFFF"));
-        Title.setTextSize(28);
+        Title.setTextSize(9 * scale);
         params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(0, 0, (int) (40 * scale), 0);
+        params.weight = 2;
         Title.setLayoutParams(params);
-
         TextView Type = new TextView(this.getContext());
         Type.setText(type);
+        params.weight = 1;
+        Type.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        params.gravity = Gravity.CENTER_HORIZONTAL;
         Type.setTextColor(Color.parseColor("#FFFFFF"));
-        Type.setTextSize(16);
+        Type.setTextSize(5 * scale);
         Type.setPadding((int) (15* scale), (int) (10* scale), (int) (15* scale), (int) (10* scale));
         Type.setBackground(changeColor());
+        Type.setLayoutParams(params);
 
         newView.addView(Title);
         newView.addView(Type);
@@ -270,10 +273,10 @@ public class NewJobPage extends Fragment {
         params.gravity = Gravity.FILL;
         params.weight = 1;
         newText.setLayoutParams(params);
-        newText.setTextSize(19);
+        newText.setTextSize(6 * scale);
         return newText;
     }
-    private TextView makeButton(int id)
+    private TextView makeButton(int id, int width)
     {
         TextView newText = new TextView(getContext());
         newText.setId(id);
@@ -285,11 +288,11 @@ public class NewJobPage extends Fragment {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins((int) (100 * scale), (int) (20* scale), (int) (100* scale), 0);
+        params.setMargins(0, (int) (20* scale), 0, 0);
         newText.setLayoutParams(params);
         newText.setBackground(drawable);
         newText.setGravity(Gravity.CENTER);
-        newText.setTextSize(20);
+        newText.setTextSize(6 * scale);
         newText.setPadding(0, (int) (10* scale), 0, (int) (10* scale));
         newText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -353,7 +356,7 @@ public class NewJobPage extends Fragment {
             newView.addView(newText);
             newText = createAndSetItemText("Место : " + dataList.get(i).get(5));
             newView.addView(newText);
-            newText = makeButton(Integer.parseInt(dataList.get(i).get(dataList.get(i).size() - 1)));
+            newText = makeButton(Integer.parseInt(dataList.get(i).get(dataList.get(i).size() - 1)), newView.getWidth() / 3);
             newView.addView(newText);
             newView.setId(Integer.parseInt(dataList.get(i).get(dataList.get(i).size() - 1)));
             list.add(newView);

@@ -4,15 +4,24 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,9 +70,13 @@ public class Profile extends Fragment {
         }
     }
     private TextView profileText;
+    private LinearLayout typesContainer;
+    private LinearLayout descriptionContainer;
+    private  float scale;
     @Override
     public void onStart() {
         super.onStart();
+        scale = getContext().getResources().getDisplayMetrics().density;
         exitButton = getActivity().findViewById(R.id.profile_exit_button);
         exitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,12 +88,89 @@ public class Profile extends Fragment {
             }
         });
         profileText = getActivity().findViewById(R.id.profile_name);
+        typesContainer = getActivity().findViewById(R.id.profile_types);
+        descriptionContainer = getActivity().findViewById(R.id.profile_Info);
         setProfile();
     }
     private void setProfile()
     {
         SharedPreferences sPref = getActivity().getSharedPreferences("AUTH", MODE_PRIVATE);
         profileText.setText(sPref.getString("user_FIO", null));
+        createAndSetTypes();
+        createAndSetDescription();
+    }
+    private void createAndSetTypes()
+    {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("AUTH", MODE_PRIVATE);
+        String types = sharedPreferences.getString("user_type", null);
+        List<String> Types = Arrays.asList(types.split(" "));
+        for(int i = 0; i < Types.size(); i++)
+        {
+            TextView tag = new TextView(this.getContext());
+            tag.setText(Types.get(i));
+            tag.setTextColor(Color.parseColor("#FFFFFF"));
+            tag.setTextSize(5 * scale);
+            tag.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            tag.setPadding((int) (15* scale), (int) (10* scale), (int) (15* scale), (int) (10* scale));
+            tag.setBackground(changeColor(Types.get(i)));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.weight = 1;
+            tag.setLayoutParams(params);
+            typesContainer.addView(tag);
+        }
+    }
+    private void createAndSetDescription()
+    {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("AUTH", MODE_PRIVATE);
+        String description = sharedPreferences.getString("user_description", null);
+        String contacts = sharedPreferences.getString("user_contacts", null);
+        TextView tex = new TextView(this.getContext());
+        tex.setText(description);
+        tex.setTextColor(Color.parseColor("#FFFFFF"));
+        tex.setTextSize(9 * scale);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.weight = 1;
+        tex.setLayoutParams(params);
+        descriptionContainer.addView(tex);
+        tex = new TextView(getContext());
+        tex.setText(contacts);
+        tex.setTextColor(Color.parseColor("#FFFFFF"));
+        tex.setTextSize(9 * scale);
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.weight = 1;
+        tex.setLayoutParams(params);
+        descriptionContainer.addView(tex);
+
+    }
+    private List<String> typeSelectors = new ArrayList<String>(Arrays.asList(new String[]{"видео", "фото", "дизайн", "текст", "активист", "комитетчик"}));
+    private GradientDrawable changeColor(String type)
+    {
+        GradientDrawable gdDefault = new GradientDrawable();
+        switch (typeSelectors.indexOf(type))
+        {
+            case 0:
+                gdDefault.setColor(getResources().getColor(R.color.video_selector_color));
+                break;
+            case 1:
+                gdDefault.setColor(getResources().getColor(R.color.photo_selector_color));
+                break;
+            case 2:
+                gdDefault.setColor(getResources().getColor(R.color.text_selector_color));
+                break;
+            case 3:
+                gdDefault.setColor(getResources().getColor(R.color.design_selector_color));
+                break;
+            case 4:
+                gdDefault.setColor(getResources().getColor(R.color.all_selector_color));
+                break;
+            case 5:
+                gdDefault.setColor(getResources().getColor(R.color.all_selector_color));
+                break;
+            default:
+                break;
+        }
+        gdDefault.setCornerRadius(100);
+        return  gdDefault;
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -53,6 +53,8 @@ public class SignInActivity extends AppCompatActivity {
     private Integer userIdInDB = null;
     private String userFIO;
     private String type;
+    private String userContacts;
+    private String userDescription;
     private boolean checkUserInDatabase(String username)
     {
         usersDB = databaseHelper.open();
@@ -63,13 +65,17 @@ public class SignInActivity extends AppCompatActivity {
             int indexUsername = userCursor.getColumnIndex(databaseHelper.COLUMN_USERNAME);
             int indexFIO = userCursor.getColumnIndex(databaseHelper.COLUMN_FIO);
             int indexTypes = userCursor.getColumnIndex(databaseHelper.COLUMN_TYPES);
+            int indexContacts = userCursor.getColumnIndex(databaseHelper.COLUMN_CONTACTS);
+            int indexDescription= userCursor.getColumnIndex(databaseHelper.COLUMN_DESCRIPTION);
             do {
                 String dbUsername = userCursor.getString(indexUsername);
                 if(dbUsername.equals(username))
                 {
                     userIdInDB = userCursor.getInt(indexID);
-                    userFIO = userCursor.getString(indexFIO);
+                    userContacts = userCursor.getString(indexContacts);
+                    userFIO = userCursor.getString(indexFIO);;
                     type = userCursor.getString(indexTypes);
+                    userDescription = userCursor.getString(indexDescription);
                     userCursor.close();
                     saveAutih();
                     return true;
@@ -136,6 +142,8 @@ public class SignInActivity extends AppCompatActivity {
         SharedPreferences.Editor ed = sPref.edit();
         ed.putInt("user_id", userIdInDB);
         ed.putString("user_FIO", userFIO);
+        ed.putString("user_contacts", userContacts);
+        ed.putString("user_description", userDescription);
         ed.putString("user_type", type);
         ed.putBoolean("LOGGED", true);
         ed.apply();

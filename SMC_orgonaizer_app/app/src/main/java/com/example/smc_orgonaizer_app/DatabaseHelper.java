@@ -33,6 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     static final String COLUMN_PASSWORD = "password";
     static final String COLUMN_FIO= "FIO";
     static final String COLUMN_TYPES = "types";
+    static final String COLUMN_CONTACTS= "contacts";
     //
     static final String TABLE_NEW_PROJECTS= "newProjects"; // название таблицы с новыми работами в бд
 

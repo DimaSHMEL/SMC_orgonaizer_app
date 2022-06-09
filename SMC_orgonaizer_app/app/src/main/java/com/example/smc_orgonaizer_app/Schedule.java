@@ -264,8 +264,8 @@ public class Schedule extends Fragment {
 
         button.setLayoutParams(params);
         button.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
-        button.setTextSize(20);
-        button.setHeight((int) (50 * scale));
+        button.setTextSize(6 * scale);
+        button.setHeight((int) (40 * scale));
         button.setWidth((int) (50 * scale));
         button.setTextColor(getResources().getColor(R.color.white));
         button.setOnClickListener(new View.OnClickListener()
@@ -308,7 +308,6 @@ public class Schedule extends Fragment {
             week.add(makeDateButton(date));
             currentWeek.add(getDate(currentDate));
         }
-        currentDate.add(Calendar.DATE,7);
         currentDate.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
         String date = String.valueOf(Integer.parseInt(getDate(currentDate).split("\\.")[0]));
         week.add(makeDateButton(date));
@@ -446,7 +445,7 @@ public class Schedule extends Fragment {
         params.gravity = Gravity.FILL;
         params.weight = 1;
         newText.setLayoutParams(params);
-        newText.setTextSize(14);
+        newText.setTextSize(5 * scale);
         return newText;
     }
 
